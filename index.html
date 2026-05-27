@@ -227,7 +227,7 @@ load();
 
 function getIP(id){return db.ips.find(x=>x.id===id)}
 function pal(ci){return PALETTE[ci%PALETTE.length]}
-function fmt(n){return'¥'+Number(n).toFixed(0)}
+function fmt(n){const v=Number(n);return'¥'+(v===Math.floor(v)?v.toFixed(0):v.toFixed(2))}
 function today(){return new Date().toISOString().slice(0,10)}
 function ipTotal(id){return db.records.filter(r=>r.ipId===id).reduce((s,r)=>s+Number(r.amount),0)}
 
