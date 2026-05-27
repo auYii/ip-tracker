@@ -291,7 +291,7 @@ function renderAccordion(page, selectedId){
       <span class="ip-acc-sel" style="color:${p.text}">${selIp.name}</span>`;
   } else {
     labelHtml=`<div class="ip-acc-preview">${previewHtml}</div>
-      <span class="ip-acc-label">${db.ips.length===0?'暂无 IP，点击添加':('全部 IP · '+db.ips.length+'个')}</span>`;
+      <span class="ip-acc-label">${db.ips.length===0?'暂无 IP':('全部 IP · '+db.ips.length+'个')}</span>`;
   }
 
   // 展开后的网格
@@ -311,12 +311,16 @@ function renderAccordion(page, selectedId){
   });
   gridHtml+=`<div class="ip-add-card" onclick="openAddIP()">＋ 添加 IP</div></div>`;
 
+  // 没有IP时自动展开面板
+  const forceOpen = db.ips.length === 0;
+  const bodyOpen = isOpen || forceOpen;
+
   return `<div class="ip-accordion" id="acc-${page}">
-    <div class="ip-accordion-header" onclick="toggleAcc('${page}')">
+    <div class="ip-accordion-header" onclick="${forceOpen?'openAddIP()':'toggleAcc(\'' + page + '\')'}" style="${forceOpen?'cursor:pointer':''}">
       <div class="ip-acc-left">${labelHtml}</div>
-      <div class="ip-acc-arrow${isOpen?' open':''}">▼</div>
+      <div class="ip-acc-arrow${bodyOpen?' open':''}">▼</div>
     </div>
-    <div class="ip-accordion-body${isOpen?' open':''}">
+    <div class="ip-accordion-body${bodyOpen?' open':''}">
       ${gridHtml}
     </div>
   </div>`;
