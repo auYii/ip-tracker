@@ -362,7 +362,7 @@ function renderOverview(){
   } else {
     h+=`<div class="records-wrap">`;
     recent.forEach(r=>{
-      const ip=getIP(r.ipId);const p=ip?pal(ip.ci):PALETTE[0];
+      const ip=getIP(r.ipId);const p=ip?pal(ip.ci):pal(0);
       h+=`<div class="record-item">
         <div class="record-dot" style="background:${p.bg};color:${p.text}">${ip?ip.name[0]:'?'}</div>
         <div class="record-info"><div class="record-name">${r.name}</div><div class="record-meta">${ip?ip.name:'—'} · ${r.cat} · ${r.date}</div></div>
@@ -380,7 +380,7 @@ function renderRecords(){
 
   if(selIP){
     // 展开单个IP
-    const ip=getIP(selIP);const p=ip?pal(ip.ci):PALETTE[0];
+    const ip=getIP(selIP);const p=ip?pal(ip.ci):pal(0);
     const recs=[...db.records.filter(r=>r.ipId===selIP)].sort((a,b)=>b.date.localeCompare(a.date));
     h+=`<div class="ip-header">
       <div class="ip-header-dot" style="background:${p.bg};color:${p.text}">${ip?ip.name[0]:'?'}</div>
@@ -418,7 +418,7 @@ function renderRecords(){
     } else {
       h+=`<div class="records-wrap">`;
       recs.forEach(r=>{
-        const rip=getIP(r.ipId);const rp=rip?pal(rip.ci):PALETTE[0];
+        const rip=getIP(r.ipId);const rp=rip?pal(rip.ci):pal(0);
         h+=`<div class="record-item">
           <div class="record-dot" style="background:${rp.bg};color:${rp.text}">${rip?rip.name[0]:'?'}</div>
           <div class="record-info"><div class="record-name">${r.name}</div><div class="record-meta">${rip?rip.name+'・':''}${r.cat} · ${r.date}</div></div>
@@ -543,7 +543,7 @@ function saveIP(){
 }
 
 function renderColorRow(){
-  document.getElementById('color-row').innerHTML=PALETTE.map((p,i)=>
+  document.getElementById('color-row').innerHTML=(isDark()?PALETTE_DARK:PALETTE_LIGHT).map((p,i)=>
     `<div class="color-swatch${selCI===i?' sel':''}" style="background:${p.bar}" onclick="selCI=${i};renderColorRow()"></div>`
   ).join('');
 }
