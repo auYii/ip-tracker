@@ -210,7 +210,8 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);font-size:15px;line-heig
 </div>
 
 <script>
-const PALETTE=[
+// 深色模式调色板
+const PALETTE_DARK=[
   {bg:'#2a1f4a',text:'#c4b5fd',bar:'#a78bfa'},
   {bg:'#1a2f2a',text:'#6ee7b7',bar:'#34d399'},
   {bg:'#2f1a24',text:'#fca5a5',bar:'#f87171'},
@@ -220,6 +221,18 @@ const PALETTE=[
   {bg:'#1f2f1a',text:'#86efac',bar:'#4ade80'},
   {bg:'#2a1a2a',text:'#f0abfc',bar:'#e879f9'},
 ];
+// 浅色模式调色板
+const PALETTE_LIGHT=[
+  {bg:'#ede9fe',text:'#5b21b6',bar:'#7c3aed'},
+  {bg:'#d1fae5',text:'#065f46',bar:'#059669'},
+  {bg:'#fee2e2',text:'#991b1b',bar:'#dc2626'},
+  {bg:'#fef3c7',text:'#92400e',bar:'#d97706'},
+  {bg:'#dbeafe',text:'#1e40af',bar:'#2563eb'},
+  {bg:'#ffedd5',text:'#9a3412',bar:'#ea580c'},
+  {bg:'#dcfce7',text:'#166534',bar:'#16a34a'},
+  {bg:'#fae8ff',text:'#86198f',bar:'#c026d3'},
+];
+function isDark(){return window.matchMedia&&window.matchMedia('(prefers-color-scheme:dark)').matches}
 const DEFAULT_CATS=['周边实体','数字内容','书籍/漫画','服装','展会/活动','其他'];
 
 let db={ips:[],records:[],cats:[...DEFAULT_CATS],nid:1,nipid:1};
@@ -237,7 +250,7 @@ function load(){
 load();
 
 function getIP(id){return db.ips.find(x=>x.id===id)}
-function pal(ci){return PALETTE[ci%PALETTE.length]}
+function pal(ci){const P=isDark()?PALETTE_DARK:PALETTE_LIGHT;return P[ci%P.length]}
 function fmt(n){const v=Number(n);return'¥'+(v===Math.floor(v)?v.toFixed(0):v.toFixed(2))}
 function today(){return new Date().toISOString().slice(0,10)}
 function ipTotal(id){return db.records.filter(r=>r.ipId===id).reduce((s,r)=>s+Number(r.amount),0)}
