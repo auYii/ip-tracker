@@ -32,7 +32,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);font-size:15px;line-heig
 .nav-btn{flex:1;padding:8px 4px;border:0.5px solid var(--border2);background:transparent;color:var(--muted);font-size:13px;border-radius:20px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
 .nav-btn.on{background:var(--accent-dim);color:var(--accent);border-color:var(--accent-glow)}
 .scroll-area{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 20px;padding-bottom:calc(90px + var(--safe-bottom))}
-.fab{position:fixed;bottom:calc(24px + var(--safe-bottom));right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);border:none;color:#fff;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--accent-glow);transition:transform .15s,box-shadow .15s;z-index:10}
+.fab{position:fixed;bottom:calc(24px + var(--safe-bottom));right:20px;width:56px;height:56px;border-radius:50%;background:var(--accent);border:none;color:#fff;font-size:26px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px var(--accent-glow);transition:transform .15s;z-index:10}
 .fab:active{transform:scale(.93)}
 
 /* Stat cards */
@@ -41,19 +41,32 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);font-size:15px;line-heig
 .stat-label{font-size:11px;color:var(--muted);margin-bottom:4px}
 .stat-val{font-size:19px;font-weight:500;font-variant-numeric:tabular-nums}
 .stat-val.accent{color:var(--accent)}
-
 .sec-label{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;margin-top:4px}
 
-/* IP Grid — 总览 & 明细 用 2列网格代替横向滚动 */
-.ip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:20px}
-.ip-grid-card{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface);border:0.5px solid var(--border);border-radius:14px;cursor:pointer;transition:border-color .2s,background .2s}
+/* ── 折叠式 IP 面板 ── */
+.ip-accordion{background:var(--surface);border:0.5px solid var(--border);border-radius:14px;margin-bottom:16px;overflow:hidden}
+.ip-accordion-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;user-select:none;gap:10px}
+.ip-accordion-header:active{opacity:.75}
+.ip-acc-left{flex:1;display:flex;align-items:center;gap:10px;min-width:0}
+.ip-acc-preview{display:flex;gap:-4px}/* 头像堆叠 */
+.ip-acc-dot{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;border:2px solid var(--surface);margin-left:-6px}
+.ip-acc-dot:first-child{margin-left:0}
+.ip-acc-label{font-size:13px;color:var(--muted);white-space:nowrap}
+.ip-acc-sel{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ip-acc-arrow{font-size:12px;color:var(--muted);transition:transform .25s;flex-shrink:0}
+.ip-acc-arrow.open{transform:rotate(180deg)}
+/* 展开的网格 */
+.ip-accordion-body{display:none;padding:0 10px 10px}
+.ip-accordion-body.open{display:block}
+.ip-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.ip-grid-card{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--surface2);border:0.5px solid var(--border);border-radius:12px;cursor:pointer;transition:border-color .2s,background .2s}
 .ip-grid-card:active{opacity:.75}
 .ip-grid-card.sel{border-color:var(--c-border,var(--accent));background:var(--c-bg,var(--accent-dim))}
-.ip-grid-dot{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.ip-grid-dot{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
 .ip-grid-info{flex:1;min-width:0}
 .ip-grid-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ip-grid-sub{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
-.ip-add-card{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:transparent;border:0.5px dashed var(--border2);border-radius:14px;cursor:pointer;font-size:13px;color:var(--muted);min-height:58px}
+.ip-add-card{display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:transparent;border:0.5px dashed var(--border2);border-radius:12px;cursor:pointer;font-size:13px;color:var(--muted);min-height:54px}
 
 /* Records */
 .record-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:0.5px solid var(--border)}
@@ -67,11 +80,11 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);font-size:15px;line-heig
 .record-del{font-size:11px;color:var(--danger);opacity:.6;cursor:pointer;margin-top:2px}
 .records-wrap{background:var(--surface);border:0.5px solid var(--border);border-radius:14px;padding:0 14px;margin-bottom:20px}
 
-/* IP detail header */
-.ip-header{display:flex;align-items:center;gap:14px;padding:14px;background:var(--surface);border:0.5px solid var(--border);border-radius:14px;margin-bottom:16px}
-.ip-header-dot{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;flex-shrink:0}
-.ip-header-name{font-family:'Noto Serif SC',serif;font-size:17px;font-weight:600}
-.ip-header-total b{font-size:17px;font-weight:500;font-variant-numeric:tabular-nums}
+/* IP detail header (明细展开后) */
+.ip-header{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--surface);border:0.5px solid var(--border);border-radius:14px;margin-bottom:14px}
+.ip-header-dot{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0}
+.ip-header-name{font-family:'Noto Serif SC',serif;font-size:16px;font-weight:600}
+.ip-header-sub{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 
 /* Bar chart */
 .bar-item{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -98,13 +111,9 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);font-size:15px;line-heig
 .btn:active{opacity:.8}
 .btn-ghost{background:var(--surface2);color:var(--muted)}
 .btn-accent{background:var(--accent);color:#fff}
-
-/* Color picker */
 .color-row{display:flex;gap:8px;flex-wrap:wrap}
 .color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
 .color-swatch.sel{border-color:#fff}
-
-/* Empty */
 .empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px}
 .empty-icon{font-size:36px;margin-bottom:10px;opacity:.4}
 
@@ -113,8 +122,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);font-size:15px;line-heig
 .cat-row{display:flex;align-items:center;padding:11px 14px;border-bottom:0.5px solid var(--border);gap:10px}
 .cat-row:last-child{border-bottom:none}
 .cat-name{flex:1;font-size:14px}
-.cat-del{font-size:11px;color:var(--danger);opacity:.7;cursor:pointer;padding:2px 6px;border:0.5px solid var(--danger);border-radius:6px;opacity:.5}
-.cat-del:active{opacity:1}
+.cat-del{font-size:11px;color:var(--danger);opacity:.6;cursor:pointer;padding:3px 8px;border:0.5px solid rgba(248,113,113,.4);border-radius:6px}
 .cat-add-row{display:flex;gap:8px}
 .cat-add-row input{flex:1;background:var(--surface2);border:0.5px solid var(--border2);border-radius:10px;padding:10px 12px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none}
 .cat-add-row input:focus{border-color:var(--accent)}
@@ -167,7 +175,7 @@ body{font-family:'DM Sans',sans-serif;color:var(--text);font-size:15px;line-heig
     <div class="field"><label>IP 名称</label><input type="text" id="ip-name-in" placeholder="输入 IP 名称"></div>
     <div class="field"><label>颜色标签</label><div class="color-row" id="color-row"></div></div>
     <div class="btn-row">
-      <button class="btn btn-ghost" id="ip-cancel-btn" onclick="closeOverlay('overlay-ip')">取消</button>
+      <button class="btn btn-ghost" onclick="closeOverlay('overlay-ip')">取消</button>
       <button class="btn" id="ip-del-btn" style="display:none;background:rgba(248,113,113,0.15);color:var(--danger)" onclick="deleteCurrentIP()">删除</button>
       <button class="btn btn-accent" onclick="saveIP()">保存</button>
     </div>
@@ -201,20 +209,18 @@ const PALETTE=[
   {bg:'#1f2f1a',text:'#86efac',bar:'#4ade80'},
   {bg:'#2a1a2a',text:'#f0abfc',bar:'#e879f9'},
 ];
-
 const DEFAULT_CATS=['周边实体','数字内容','书籍/漫画','服装','展会/活动','其他'];
 
 let db={ips:[],records:[],cats:[...DEFAULT_CATS],nid:1,nipid:1};
 let selCI=0,tab='overview',selIP=null,editIPId=null;
+// 折叠面板展开状态（各页面独立）
+let accOpen={overview:false, records:false};
 
 function save(){try{localStorage.setItem('iptracker2',JSON.stringify(db))}catch(e){}}
 function load(){
   try{
     const d=localStorage.getItem('iptracker2');
-    if(d){
-      db=JSON.parse(d);
-      if(!db.cats)db.cats=[...DEFAULT_CATS]; // 兼容旧数据
-    }
+    if(d){db=JSON.parse(d);if(!db.cats)db.cats=[...DEFAULT_CATS];}
   }catch(e){}
 }
 load();
@@ -241,6 +247,76 @@ function render(){
   else area.innerHTML=renderChart();
 }
 
+/* ── 折叠 IP 面板 HTML ── */
+function renderAccordion(page, selectedId){
+  const isOpen = accOpen[page];
+  const selIp = selectedId ? getIP(selectedId) : null;
+
+  // 预览：收起时最多显示3个小圆点
+  const previewIps = db.ips.slice(0,3);
+  let previewHtml = previewIps.map(ip=>{
+    const p=pal(ip.ci);
+    return `<div class="ip-acc-dot" style="background:${p.bg};color:${p.text}">${ip.name[0]}</div>`;
+  }).join('');
+
+  // 收起时显示的标签文字
+  let labelHtml;
+  if(selIp){
+    const p=pal(selIp.ci);
+    labelHtml=`<div class="ip-acc-dot" style="background:${p.bg};color:${p.text};margin-left:0">${selIp.name[0]}</div>
+      <span class="ip-acc-sel" style="color:${p.text}">${selIp.name}</span>`;
+  } else {
+    labelHtml=`<div class="ip-acc-preview">${previewHtml}</div>
+      <span class="ip-acc-label">${db.ips.length===0?'暂无 IP，点击添加':('全部 IP · '+db.ips.length+'个')}</span>`;
+  }
+
+  // 展开后的网格
+  let gridHtml=`<div class="ip-grid">`;
+  db.ips.forEach(ip=>{
+    const p=pal(ip.ci);
+    const cnt=db.records.filter(r=>r.ipId===ip.id).length;
+    const isSel=selectedId===ip.id;
+    gridHtml+=`<div class="ip-grid-card${isSel?' sel':''}" style="--c-bg:${p.bg};--c-border:${p.bar}"
+      onclick="pickIP_${page}(${ip.id})">
+      <div class="ip-grid-dot" style="background:${p.bg};color:${p.text}">${ip.name[0]}</div>
+      <div class="ip-grid-info">
+        <div class="ip-grid-name">${ip.name}</div>
+        <div class="ip-grid-sub">${fmt(ipTotal(ip.id))} · ${cnt}笔</div>
+      </div>
+    </div>`;
+  });
+  gridHtml+=`<div class="ip-add-card" onclick="openAddIP()">＋ 添加 IP</div></div>`;
+
+  return `<div class="ip-accordion" id="acc-${page}">
+    <div class="ip-accordion-header" onclick="toggleAcc('${page}')">
+      <div class="ip-acc-left">${labelHtml}</div>
+      <div class="ip-acc-arrow${isOpen?' open':''}">▼</div>
+    </div>
+    <div class="ip-accordion-body${isOpen?' open':''}">
+      ${gridHtml}
+    </div>
+  </div>`;
+}
+
+function toggleAcc(page){
+  accOpen[page]=!accOpen[page];
+  render();
+}
+
+/* 总览页点IP → 跳到明细 */
+function pickIP_overview(id){
+  selIP=id;tab='records';accOpen.records=false;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-records').classList.add('on');
+  render();
+}
+/* 明细页点IP → 筛选 */
+function pickIP_records(id){
+  if(selIP===id){selIP=null;}else{selIP=id;}
+  accOpen.records=false;
+  render();
+}
+
 /* ── 总览 ── */
 function renderOverview(){
   const total=db.records.reduce((s,r)=>s+Number(r.amount),0);
@@ -251,27 +327,11 @@ function renderOverview(){
     <div class="stat-card"><div class="stat-label">笔数</div><div class="stat-val">${db.records.length}</div></div>
   </div>`;
 
-  // IP 二列网格
-  h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;margin-top:4px">
+  h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
     <div class="sec-label" style="margin:0">我的 IP</div>
   </div>`;
-  h+=`<div class="ip-grid">`;
-  db.ips.forEach(ip=>{
-    const p=pal(ip.ci);
-    const t=ipTotal(ip.id);
-    const cnt=db.records.filter(r=>r.ipId===ip.id).length;
-    h+=`<div class="ip-grid-card" style="--c-bg:${p.bg};--c-border:${p.bar}" onclick="goIPDetail(${ip.id})">
-      <div class="ip-grid-dot" style="background:${p.bg};color:${p.text}">${ip.name[0]}</div>
-      <div class="ip-grid-info">
-        <div class="ip-grid-name">${ip.name}</div>
-        <div class="ip-grid-sub">${fmt(t)} · ${cnt}笔</div>
-      </div>
-    </div>`;
-  });
-  h+=`<div class="ip-add-card" onclick="openAddIP()">＋ 添加 IP</div>`;
-  h+=`</div>`;
+  h+=renderAccordion('overview', null);
 
-  // 最近消费
   h+=`<div class="sec-label">最近消费</div>`;
   if(recent.length===0){
     h+=`<div class="empty"><div class="empty-icon">📦</div>还没有记录，点右下角记一笔</div>`;
@@ -290,26 +350,19 @@ function renderOverview(){
   return h;
 }
 
-function goIPDetail(id){
-  selIP=id;tab='records';
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
-  document.getElementById('tab-records').classList.add('on');
-  render();
-}
-
 /* ── 明细 ── */
 function renderRecords(){
   let h='';
+
   if(selIP){
-    // 单个IP展开视图
-    const ip=getIP(selIP);
-    const p=ip?pal(ip.ci):PALETTE[0];
+    // 展开单个IP
+    const ip=getIP(selIP);const p=ip?pal(ip.ci):PALETTE[0];
     const recs=[...db.records.filter(r=>r.ipId===selIP)].sort((a,b)=>b.date.localeCompare(a.date));
     h+=`<div class="ip-header">
       <div class="ip-header-dot" style="background:${p.bg};color:${p.text}">${ip?ip.name[0]:'?'}</div>
       <div style="flex:1;min-width:0">
         <div class="ip-header-name">${ip?ip.name:'未知'}</div>
-        <div class="ip-header-total">总计 <b>${fmt(ipTotal(selIP))}</b> · ${recs.length}笔</div>
+        <div class="ip-header-sub">${fmt(ipTotal(selIP))} · ${recs.length}笔</div>
       </div>
       <button onclick="openEditIP(${selIP})" style="background:none;border:0.5px solid var(--border2);color:var(--muted);padding:5px 10px;border-radius:99px;font-size:11px;cursor:pointer;margin-right:6px">编辑</button>
       <button onclick="selIP=null;render()" style="background:none;border:0.5px solid var(--border2);color:var(--muted);padding:5px 10px;border-radius:99px;font-size:11px;cursor:pointer">全部</button>
@@ -328,23 +381,12 @@ function renderRecords(){
       h+=`</div>`;
     }
   } else {
-    // IP 二列网格筛选
-    h+=`<div class="ip-grid">`;
-    db.ips.forEach(ip=>{
-      const p=pal(ip.ci);
-      const cnt=db.records.filter(r=>r.ipId===ip.id).length;
-      h+=`<div class="ip-grid-card" style="--c-bg:${p.bg};--c-border:${p.bar}" onclick="selIP=${ip.id};render()">
-        <div class="ip-grid-dot" style="background:${p.bg};color:${p.text}">${ip.name[0]}</div>
-        <div class="ip-grid-info">
-          <div class="ip-grid-name">${ip.name}</div>
-          <div class="ip-grid-sub">${fmt(ipTotal(ip.id))} · ${cnt}笔</div>
-        </div>
-      </div>`;
-    });
-    h+=`<div class="ip-add-card" onclick="openAddIP()">＋ 添加 IP</div>`;
-    h+=`</div>`;
+    // 折叠面板 + 全部记录
+    h+=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <div class="sec-label" style="margin:0">选择 IP 筛选</div>
+    </div>`;
+    h+=renderAccordion('records', null);
 
-    // 全部记录
     const recs=[...db.records].sort((a,b)=>b.date.localeCompare(a.date));
     h+=`<div class="sec-label">全部明细</div>`;
     if(recs.length===0){
@@ -373,7 +415,7 @@ function renderChart(){
   if(ipData.length===0) h+=`<div class="empty">暂无数据</div>`;
   ipData.forEach(({ip,t})=>{
     const p=pal(ip.ci);const w=maxIP>0?(t/maxIP*100).toFixed(1):0;
-    h+=`<div class="bar-item" onclick="goIPDetail(${ip.id})" style="cursor:pointer">
+    h+=`<div class="bar-item" onclick="pickIP_overview(${ip.id})" style="cursor:pointer">
       <div class="bar-name">${ip.name}</div>
       <div class="bar-track"><div class="bar-fill" style="width:${w}%;background:${p.bar}"></div></div>
       <div class="bar-amt">${fmt(t)}</div>
@@ -405,8 +447,7 @@ function delRecord(id){
 }
 
 function refreshCatSelect(){
-  const sel=document.getElementById('r-cat');
-  if(!sel)return;
+  const sel=document.getElementById('r-cat');if(!sel)return;
   const cur=sel.value;
   sel.innerHTML=db.cats.map(c=>`<option>${c}</option>`).join('');
   if(db.cats.includes(cur))sel.value=cur;
@@ -416,7 +457,7 @@ function openAddRecord(){
   closeOverlay('overlay-cat');
   const sel=document.getElementById('r-ip');
   sel.innerHTML=db.ips.map(ip=>`<option value="${ip.id}">${ip.name}</option>`).join('');
-  if(selIP) sel.value=selIP;
+  if(selIP)sel.value=selIP;
   document.getElementById('r-name').value='';
   document.getElementById('r-amount').value='';
   document.getElementById('r-date').value=today();
@@ -435,7 +476,6 @@ function saveRecord(){
   save();closeOverlay('overlay-record');render();
 }
 
-/* ── IP 增删改 ── */
 function openAddIP(){
   editIPId=null;
   document.getElementById('ip-sheet-title').textContent='添加 IP';
@@ -460,8 +500,7 @@ function deleteCurrentIP(){
   if(!editIPId)return;
   const ip=getIP(editIPId);
   const cnt=db.records.filter(r=>r.ipId===editIPId).length;
-  const msg=cnt>0?`删除「${ip.name}」？该 IP 下 ${cnt} 条记录也会一并删除。`:`删除「${ip.name}」？`;
-  if(!confirm(msg))return;
+  if(!confirm(`删除「${ip.name}」？${cnt>0?'该 IP 下'+cnt+'条记录也会一并删除。':''}`))return;
   db.ips=db.ips.filter(x=>x.id!==editIPId);
   db.records=db.records.filter(r=>r.ipId!==editIPId);
   if(selIP===editIPId)selIP=null;
@@ -472,8 +511,7 @@ function saveIP(){
   const name=document.getElementById('ip-name-in').value.trim();
   if(!name)return;
   if(editIPId){
-    const ip=getIP(editIPId);
-    if(ip){ip.name=name;ip.ci=selCI;}
+    const ip=getIP(editIPId);if(ip){ip.name=name;ip.ci=selCI;}
   } else {
     db.ips.push({id:db.nipid++,name,ci:selCI});
   }
@@ -486,7 +524,6 @@ function renderColorRow(){
   ).join('');
 }
 
-/* ── 分类管理 ── */
 function openCatMgr(){
   closeOverlay('overlay-record');
   renderCatList();
@@ -498,27 +535,20 @@ function renderCatList(){
   const wrap=document.getElementById('cat-list-wrap');
   if(db.cats.length===0){wrap.innerHTML='';return;}
   wrap.innerHTML=`<div class="cat-list">`+
-    db.cats.map((c,i)=>
-      `<div class="cat-row">
-        <span class="cat-name">${c}</span>
-        <span class="cat-del" onclick="delCat(${i})">删除</span>
-      </div>`
-    ).join('')+
+    db.cats.map((c,i)=>`<div class="cat-row"><span class="cat-name">${c}</span><span class="cat-del" onclick="delCat(${i})">删除</span></div>`).join('')+
   `</div>`;
 }
 
 function delCat(i){
   if(db.cats.length<=1){alert('至少保留一个分类');return;}
-  db.cats.splice(i,1);
-  save();renderCatList();
+  db.cats.splice(i,1);save();renderCatList();
 }
 
 function addCat(){
   const val=document.getElementById('cat-new-input').value.trim();
   if(!val)return;
   if(db.cats.includes(val)){alert('该分类已存在');return;}
-  db.cats.push(val);
-  save();renderCatList();
+  db.cats.push(val);save();renderCatList();
   document.getElementById('cat-new-input').value='';
 }
 
