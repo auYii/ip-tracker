@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+/* 深色模式（默认） */
 :root{
   --bg:#0f0f1a;--surface:#1a1a2e;--surface2:#222240;
   --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);
@@ -19,6 +20,16 @@
   --accent:#a78bfa;--accent-dim:rgba(167,139,250,0.15);--accent-glow:rgba(167,139,250,0.3);
   --danger:#f87171;
   --safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);
+}
+/* 浅色模式 */
+@media(prefers-color-scheme:light){
+  :root{
+    --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eeea;
+    --border:rgba(0,0,0,0.07);--border2:rgba(0,0,0,0.13);
+    --text:#1a1828;--muted:rgba(26,24,40,0.45);--hint:rgba(26,24,40,0.25);
+    --accent:#7c5cfa;--accent-dim:rgba(124,92,250,0.12);--accent-glow:rgba(124,92,250,0.25);
+    --danger:#dc3545;
+  }
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg)}
